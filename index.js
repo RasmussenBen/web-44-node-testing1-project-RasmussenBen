@@ -97,7 +97,8 @@ class Seasons {
    * [Exercise 5A] Seasons creates a seasons object
    */
   constructor() {
-    this.season = initialSeason
+    this.seasons = ['summer', 'fall', 'winter', 'spring']
+    this.currentSeason = 0
   }
 
   /**
@@ -113,15 +114,14 @@ class Seasons {
    * seasons.next() // returns "summer"
    */
   next() {
-    const originalSeason = this.season
-    const seasons = ["summer, fall, winter, spring"]
-    const originalIndex = seasons.indexOf(originalSeason)
-    const nextIndex = (originalIndex + 1) % seasons.length
-    const nextSeason = seasons[nextIndex]
-
-    this.season = nextSeason
-    
-    return originalSeason
+    const result = this.seasons[this.currentSeason]
+    if(this.currentSeason === 3) {
+      this.currentSeason = 0
+    }
+    else {
+      this.currentSeason++
+    }
+    return result
   }
 }
 
@@ -135,6 +135,7 @@ class Car {
   constructor(name, tankSize, mpg) {
     this.odometer = 0 // car initilizes with zero miles
     this.tank = tankSize // car initiazes full of gas
+    this.tankSize = tankSize
     this.mpg = mpg
   }
 
@@ -152,11 +153,12 @@ class Car {
    * focus.drive(200) // returns 600 (ran out of gas after 100 miles)
    */
   drive(distance) {
-    const originalOdometer = this.odometer
-
-    if (this.tank > 0) {
-      this.tank -= distance /this.mpg
-      this.odometer += distance
+    const possibleMiles = this.tank * this.mpg
+    if(distance<=possibleMiles){
+      this.odometer = this.odometer + distance
+      this.tank = this.tank - distance/this.mpg}
+    else{
+      this.odometer = this.odometer + possibleMiles
     }
     return this.odometer
   }
@@ -173,8 +175,14 @@ class Car {
    * focus.refuel(99) // returns 600 (tank only holds 20)
    */
   refuel(gallons) {
-    const gallons = this.gallons
-    if (this.odometer)
+    const pGallons = this.tankSize - this.tank
+    if(gallons<=pGallons){
+      this.tank = this.tank + gallons
+    }
+    else{
+      this.tank = this.tankSize
+    }
+    return this.tank * this.mpg
   }
 }
 
